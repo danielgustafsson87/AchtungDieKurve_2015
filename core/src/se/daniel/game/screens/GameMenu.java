@@ -29,6 +29,7 @@ public class GameMenu implements Screen{
 	private TextButton arrowLeft = new TextButton("<", skin);
 	private TextButton arrowRight = new TextButton(">", skin);
 	private Label nbrOfPlayersLabel = new Label(Integer.toString(nbrOfPlayers), skin); //TODO: is label best here?
+	private TextButton startButton = new TextButton("Start", skin);
 	
 	@Override
 	public void show() {
@@ -55,14 +56,24 @@ public class GameMenu implements Screen{
 				nbrOfPlayersLabel.setText((Integer.toString(curves.size())));
 			}
 		});
-		
+		startButton.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				((Game) Gdx.app.getApplicationListener()).setScreen(new GameScreen(curves));
+			}
+		});
 		
 		table.add(players).padLeft(200);
 		table.add(arrowLeft);
 		table.add(nbrOfPlayersLabel);
 		table.add(arrowRight).row();
+		table.add(startButton);
 		for(int i = 0; i < nbrOfPlayers; i++) {
 			curves.add(new Curve(i));
+			
+			// to look on curves properties
+			Curve c = new Curve(i);
+			
 		}
 		
 		table.setFillParent(true);
