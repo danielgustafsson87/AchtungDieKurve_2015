@@ -1,5 +1,9 @@
 package se.daniel.game.screens;
 
+import java.util.ArrayList;
+
+import se.daniel.game.models.Curve;
+
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -12,49 +16,59 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
-public class MainMenu implements Screen{
+public class GameMenu implements Screen{
+	protected static final int MAX_PLAYERS = 8;
 	private Stage stage = new Stage();
 	private Table table = new Table();
+	private Skin skin = new Skin(Gdx.files.internal("skins/uiskin.json"));
 	
-	private Skin testSkin = new Skin(Gdx.files.internal("skins/uiskin.json"));
-	private Label title = new Label("Achtung Die Kurve", testSkin);
-	private TextButton playButton = new TextButton("play", testSkin);
-	private TextButton optionsButton = new TextButton("options", testSkin);
-	private TextButton exitButton = new TextButton("exit", testSkin);
+	private int nbrOfPlayers = 2;
+	private ArrayList<Curve> curves = new ArrayList<Curve>();
+	
+	private Label players = new Label("players:", skin);
+	private TextButton arrowLeft = new TextButton("<", skin);
+	private TextButton arrowRight = new TextButton(">", skin);
+	private Label nbrOfPlayersLabel = new Label(Integer.toString(nbrOfPlayers), skin); //TODO: is label best here?
+	
 	@Override
 	public void show() {
-		//add listeners
-		playButton.addListener(new ClickListener(){
+		arrowLeft.addListener(new ClickListener(){
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				((Game) Gdx.app.getApplicationListener()).setScreen(new GameMenu());
+				if (nbrOfPlayers > 1) {
+					nbrOfPlayers--;
+					curves.remove(nbrOfPlayers);
+				}
+				nbrOfPlayersLabel.setText((Integer.toString(nbrOfPlayers)));
+				nbrOfPlayersLabel.setText((Integer.toString(curves.size())));
+			}
+		});
+		arrowRight.addListener(new ClickListener(){
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				if (nbrOfPlayers < MAX_PLAYERS) {
+					nbrOfPlayers++;
+					curves.add(new Curve(nbrOfPlayers));
+				}
+				
+				nbrOfPlayersLabel.setText((Integer.toString(nbrOfPlayers)));
+				nbrOfPlayersLabel.setText((Integer.toString(curves.size())));
 			}
 		});
 		
-		optionsButton.addListener(new ClickListener(){
-			@Override
-			public void clicked(InputEvent event, float x, float y) {
-				((Game) Gdx.app.getApplicationListener()).setScreen(new Splash());
-			}
-		});
 		
-		exitButton.addListener(new ClickListener(){
-			@Override
-			public void clicked(InputEvent event, float x, float y) {
-				Gdx.app.exit();
-			}
-		});
+		table.add(players).padLeft(200);
+		table.add(arrowLeft);
+		table.add(nbrOfPlayersLabel);
+		table.add(arrowRight).row();
+		for(int i = 0; i < nbrOfPlayers; i++) {
+			curves.add(new Curve(i));
+		}
 		
-		
-		table.add(title).padBottom(20).row();
-		table.add(playButton).size(150,60).padBottom(10).row();
-		table.add(optionsButton).size(150,60).padBottom(10).row();
-		table.add(exitButton).size(150,60).padBottom(10).row();
 		table.setFillParent(true);
 		stage.addActor(table);
 		
 		Gdx.input.setInputProcessor(stage);
-		
 	}
 
 	@Override
@@ -63,7 +77,6 @@ public class MainMenu implements Screen{
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		stage.act();
 		stage.draw();
-		
 	}
 
 	@Override
@@ -92,9 +105,8 @@ public class MainMenu implements Screen{
 
 	@Override
 	public void dispose() {
-		testSkin.dispose();
+		skin.dispose();
 		stage.dispose();
-		
 	}
 
 }
