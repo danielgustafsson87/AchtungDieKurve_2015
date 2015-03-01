@@ -10,12 +10,14 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 
 public class Splash implements Screen{
     private Texture texture = new Texture(Gdx.files.internal("images/splash.jpeg"));
     private Image splashImage = new Image(texture);
     private Stage stage = new Stage();
+    
 	@Override
 	public void show() {
 		//splashImage.setX((float) Main.WIDTH);
@@ -24,11 +26,11 @@ public class Splash implements Screen{
 		splashImage.setSize((float) Main.WIDTH, (float) Main.HEIGHT);
 		stage.addActor(splashImage);
 		splashImage.addAction(Actions.sequence(Actions.alpha(0),
-				Actions.fadeIn(0.5f), Actions.delay(2),
+				Actions.fadeIn(0.5f), Actions.delay(0.5f),
 				Actions.run(new Runnable(){
 			@Override
 			public void run(){
-				((Game) Gdx.app.getApplicationListener()).setScreen(new Splash());
+				((Game) Gdx.app.getApplicationListener()).setScreen(new MainMenu());
 			}
 				})));
 		

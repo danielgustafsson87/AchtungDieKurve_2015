@@ -4,16 +4,27 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
 public class MainMenu implements Screen{
 	private Stage stage = new Stage();
-	private TextButton play = new TextButton(null, null, null);
-	private TextButton optioins = new TextButton(null, null, null);
-	private TextButton exit = new TextButton(null, null, null);
+	private Table table = new Table();
+	
+	private Skin testSkin = new Skin(Gdx.files.internal("skins/uiskin.json"));
+	private TextButton playButton = new TextButton("play", testSkin);
+	private TextButton optionsButton = new TextButton("options", testSkin);
+	private TextButton exitButton = new TextButton("exit", testSkin);
 	@Override
 	public void show() {
-		// TODO Auto-generated method stub
+		table.add(playButton).row();
+		table.add(optionsButton).row();
+		table.add(exitButton).row();
+		table.setFillParent(true);
+		stage.addActor(table);
+		
+		Gdx.input.setInputProcessor(stage);
 		
 	}
 
@@ -52,6 +63,7 @@ public class MainMenu implements Screen{
 
 	@Override
 	public void dispose() {
+		testSkin.dispose();
 		stage.dispose();
 		
 	}
