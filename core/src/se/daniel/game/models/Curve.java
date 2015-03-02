@@ -1,20 +1,29 @@
 package se.daniel.game.models;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 
 public class Curve extends Actor{
 	private String keyLeft;
 	private String keyRight;
-	private String name;
-	
+	private Color color;
+	private Table table = new Table();
 	public Curve(int playerNbr){
 		super();
-		name = "Player + " + Integer.toString(playerNbr);
+		setName("Player" + Integer.toString(playerNbr +1));
 		setDefaultKeys(playerNbr);
+		createTable();
 	}
 	
 	private void setDefaultKeys(int playerNbr){
 		switch(playerNbr) {
+		case 0:
+			setKeyLeft("v");
+			setKeyRight("b");
 		case 1:
 			setKeyLeft("a");
 			setKeyRight("s");
@@ -51,5 +60,19 @@ public class Curve extends Actor{
 	public void setKeyLeft(String keyLeft) {
 		this.keyLeft = keyLeft;
 	}
+	public Table getTable(){
+		return table;
+	}
+	private void createTable() {
+		Skin skin = new Skin(Gdx.files.internal("skins/uiskin.json"));
+		table.add(new TextField(getName(), skin)).left();
+		table.padLeft(100);
+		table.add(new TextField(getKeyLeft(), skin));
+		table.add(new TextField(getKeyRight(), skin));
+		
+		
+		
+	}
+	
 
 }

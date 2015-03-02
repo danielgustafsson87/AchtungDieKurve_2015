@@ -20,39 +20,48 @@ public class GameMenu implements Screen{
 	protected static final int MAX_PLAYERS = 8;
 	private Stage stage = new Stage();
 	private Table table = new Table();
+	private Table playerTable = new Table();
 	private Skin skin = new Skin(Gdx.files.internal("skins/uiskin.json"));
 	
-	private int nbrOfPlayers = 2;
 	private ArrayList<Curve> curves = new ArrayList<Curve>();
 	
 	private Label players = new Label("players:", skin);
 	private TextButton arrowLeft = new TextButton("<", skin);
 	private TextButton arrowRight = new TextButton(">", skin);
-	private Label nbrOfPlayersLabel = new Label(Integer.toString(nbrOfPlayers), skin); //TODO: is label best here?
+	private Label nbrOfPlayersLabel ;
 	private TextButton startButton = new TextButton("Start", skin);
+	private TextButton backButton = new TextButton("Back", skin);
 	
+	public GameMenu(int nbrOfPlayers) {
+		for(int i = 0; i < nbrOfPlayers; i++) {
+			curves.add(new Curve(i));
+			
+		}
+		nbrOfPlayersLabel = new Label(Integer.toString(curves.size()), skin); //TODO: is label best here?
+		
+		
+	}
 	@Override
 	public void show() {
 		arrowLeft.addListener(new ClickListener(){
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				if (nbrOfPlayers > 1) {
-					nbrOfPlayers--;
-					curves.remove(nbrOfPlayers);
+				if (curves.size() > 1) {
+					playerTable.removeActor(curves.remove(curves.size() -1).getTable());
+					
 				}
-				nbrOfPlayersLabel.setText((Integer.toString(nbrOfPlayers)));
 				nbrOfPlayersLabel.setText((Integer.toString(curves.size())));
 			}
 		});
 		arrowRight.addListener(new ClickListener(){
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				if (nbrOfPlayers < MAX_PLAYERS) {
-					nbrOfPlayers++;
-					curves.add(new Curve(nbrOfPlayers));
+				if (curves.size() < MAX_PLAYERS) {
+					Curve newCurve = new Curve(curves.size());
+					curves.add(newCurve);
+					playerTable.add(newCurve.getTable());
 				}
 				
-				nbrOfPlayersLabel.setText((Integer.toString(nbrOfPlayers)));
 				nbrOfPlayersLabel.setText((Integer.toString(curves.size())));
 			}
 		});
@@ -62,20 +71,32 @@ public class GameMenu implements Screen{
 				((Game) Gdx.app.getApplicationListener()).setScreen(new GameScreen(curves));
 			}
 		});
+		backButton.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				((Game) Gdx.app.getApplicationListener()).setScreen(new MainMenu());
+			}
+		});
 		
-		table.add(players).padLeft(200);
-		table.add(arrowLeft);
+		table.add(players).left();
+		table.add(arrowLeft).padLeft(100);
 		table.add(nbrOfPlayersLabel);
-		table.add(arrowRight).row();
-		table.add(startButton);
-		for(int i = 0; i < nbrOfPlayers; i++) {
-			curves.add(new Curve(i));
-			
+		table.add(arrowRight);
+		table.row();
+		
+		for(Curve curve: curves) {
 			// to look on curves properties
-			Curve c = new Curve(i);
+			playerTable.add(curve.getTable()).left();
+			playerTable.row();
 			
 		}
+		table.add(playerTable);
+		table.row();
+		table.add(startButton);
+		table.row();
+		table.add(backButton);
 		
+		table.setDebug(true);
 		table.setFillParent(true);
 		stage.addActor(table);
 		
