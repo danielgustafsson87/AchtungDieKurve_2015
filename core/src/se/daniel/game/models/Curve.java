@@ -24,13 +24,16 @@ public class Curve extends Actor{
 		case 0:
 			setKeyLeft("v");
 			setKeyRight("b");
+			break;
 		case 1:
 			setKeyLeft("a");
 			setKeyRight("s");
+			break;
 		
 		case 2:
 			setKeyLeft("k");
 			setKeyRight("l");
+			break;
 			
 		default:
 			setKeyLeft(null);
@@ -66,8 +69,9 @@ public class Curve extends Actor{
 	private void createTable() {
 		Skin skin = new Skin(Gdx.files.internal("skins/uiskin.json"));
 		table.add(new TextField(getName(), skin)).left();
-		table.padLeft(100);
+		
 		table.add(new TextField(getKeyLeft(), skin));
+		table.padLeft(100);
 		table.add(new TextField(getKeyRight(), skin));
 		
 		
