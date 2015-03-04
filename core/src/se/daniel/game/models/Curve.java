@@ -1,5 +1,7 @@
 package se.daniel.game.models;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -9,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.sun.tools.javac.util.Pair;
 
 public class Curve extends Actor{
 	private String keyLeft;
@@ -19,13 +22,14 @@ public class Curve extends Actor{
 	private float speed;
 	private boolean projectionMatrixSet;
 	private ShapeRenderer shapeRenderer;
+	private ArrayList<Pair<Float, Float>> tail;
 	public Curve(int playerNbr){
 		super();
 		shapeRenderer = new ShapeRenderer();
 		projectionMatrixSet = false;
 		table = new Table();
 		setName("Player" + Integer.toString(playerNbr +1));
-
+		tail = new ArrayList<Pair<Float, Float>>();
 		setDebug(true);
 		speed = 50;
 
@@ -42,12 +46,17 @@ public class Curve extends Actor{
         }
         shapeRenderer.begin(ShapeType.Filled);
         shapeRenderer.setColor(getColor());
-        shapeRenderer.circle(getX(), getY(), 5.0f);
+        shapeRenderer.circle(getX(), getY(), 3.0f);
+        for(Pair<Float, Float> tailPart : tail) {
+        	shapeRenderer.circle(tailPart.fst, tailPart.snd, 3.0f);
+        }
         shapeRenderer.end();
+        
         batch.begin();
     }
     @Override
     public void act(float delta){
+    	tail.add(new Pair<Float, Float>(getX(), getY()));
     	setX(getX() + speed*delta* (float) Math.cos(radians));
     	setY(getY() + speed*delta* (float) Math.sin(radians));
     }
