@@ -68,10 +68,9 @@ public class Curve extends Actor{
 	}
 	private void createTable() {
 		Skin skin = new Skin(Gdx.files.internal("skins/uiskin.json"));
-		table.add(new TextField(getName(), skin)).left();
+		table.add(new TextField(getName(), skin));
 		
 		table.add(new TextField(getKeyLeft(), skin));
-		table.padLeft(100);
 		table.add(new TextField(getKeyRight(), skin));
 		
 		

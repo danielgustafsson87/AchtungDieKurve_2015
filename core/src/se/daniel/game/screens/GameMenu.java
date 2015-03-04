@@ -86,15 +86,15 @@ public class GameMenu implements Screen{
 		
 		for(Curve curve: curves) {
 			// to look on curves properties
-			playerTable.add(curve.getTable()).left();
+			playerTable.add(curve.getTable());
 			playerTable.row();
 			
 		}
-		table.add(playerTable);
+		table.add(playerTable).height(300);
 		table.row();
-		table.add(startButton);
-		table.row();
-		table.add(backButton);
+		
+		table.add(backButton).left();
+		table.add(startButton).right();
 		
 		table.setDebug(true);
 		table.setFillParent(true);
