@@ -2,13 +2,15 @@ package se.daniel.game.screens;
 
 import java.util.ArrayList;
 
+import se.daniel.game.Main;
 import se.daniel.game.models.Curve;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-
+import java.util.Random;
+import java.math.*;
 public class GameScreen implements Screen{
 	private Stage stage = new Stage();
 	private ArrayList<Curve> curves;
@@ -21,13 +23,12 @@ public class GameScreen implements Screen{
 
 	@Override
 	public void show() {
-		// TODO Auto-generated method stub
-		
+		initializeCurves();
+		Gdx.gl.glClearColor(0, 0, 0, 1);
 	}
 
 	@Override
 	public void render(float delta) {
-		Gdx.gl.glClearColor(0, 0, 0.2f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		stage.act();
@@ -63,6 +64,20 @@ public class GameScreen implements Screen{
 	public void dispose() {
 		// TODO Auto-generated method stub
 		
+	}
+	private void initializeCurves(){
+		Random rnd = new Random();
+		for (Curve curve : curves) {
+			//random position
+			curve.setX(rnd.nextInt(Main.WIDTH));
+			curve.setY(rnd.nextInt(Main.HEIGHT));
+			
+			//random direction
+			
+			curve.setRadians(Math.toRadians(rnd.nextInt(360)));
+			
+			stage.addActor(curve);
+		}
 	}
 
 }

@@ -2,6 +2,9 @@ package se.daniel.game.models;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -11,28 +14,61 @@ public class Curve extends Actor{
 	private String keyLeft;
 	private String keyRight;
 	private Color color;
-	private Table table = new Table();
+	private Table table;
+	private double radians;
+	private float speed;
+	private boolean projectionMatrixSet;
+	private ShapeRenderer shapeRenderer;
 	public Curve(int playerNbr){
 		super();
+		shapeRenderer = new ShapeRenderer();
+		projectionMatrixSet = false;
+		table = new Table();
 		setName("Player" + Integer.toString(playerNbr +1));
-		setDefaultKeys(playerNbr);
+
+		setDebug(true);
+		speed = 50;
+
+		setDefaultValues(playerNbr);
 		createTable();
 	}
 	
-	private void setDefaultKeys(int playerNbr){
+    @Override
+    public void draw (Batch batch, float parentAlpha) {
+        batch.end();
+        if(!projectionMatrixSet){
+            shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
+            projectionMatrixSet = true; //TODO: maybe we need new projection matrix each time?
+        }
+        shapeRenderer.begin(ShapeType.Filled);
+        shapeRenderer.setColor(getColor());
+        shapeRenderer.circle(getX(), getY(), 5.0f);
+        shapeRenderer.end();
+        batch.begin();
+    }
+    @Override
+    public void act(float delta){
+    	setX(getX() + speed*delta* (float) Math.cos(radians));
+    	setY(getY() + speed*delta* (float) Math.sin(radians));
+    }
+	
+	private void setDefaultValues(int playerNbr){
 		switch(playerNbr) {
 		case 0:
 			setKeyLeft("v");
 			setKeyRight("b");
+			setColor(Color.RED);
 			break;
 		case 1:
 			setKeyLeft("a");
 			setKeyRight("s");
+			setColor(Color.BLUE);
 			break;
 		
 		case 2:
 			setKeyLeft("k");
 			setKeyRight("l");
+			setColor(Color.GREEN);
 			break;
 			
 		default:
@@ -73,8 +109,14 @@ public class Curve extends Actor{
 		table.add(new TextField(getKeyLeft(), skin));
 		table.add(new TextField(getKeyRight(), skin));
 		
+	}
+
+	public void setRadians(double radians) {
+		this.radians = radians;
 		
-		
+	}
+	public double getRadians() {
+		return this.radians;
 	}
 	
 
