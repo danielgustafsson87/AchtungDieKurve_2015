@@ -23,7 +23,8 @@ public class Curve extends Actor{
 	private int keyRight;
 	private Table table;
 	private double radians;
-	private float speed;
+	private static final double TURNING_RADIUS = Math.PI * 0.4;
+	private static final float SPEED = 50;
 	private boolean projectionMatrixSet;
 	private ShapeRenderer shapeRenderer;
 	private ArrayList<Pair<Float, Float>> tail;
@@ -37,7 +38,6 @@ public class Curve extends Actor{
 		setName("Player" + Integer.toString(playerNbr +1));
 		tail = new ArrayList<Pair<Float, Float>>();
 		setDebug(true);
-		speed = 50;
 
 		setDefaultValues(playerNbr);
 		createTable();
@@ -65,13 +65,13 @@ public class Curve extends Actor{
     public void act(float delta){
     	tail.add(new Pair<Float, Float>(getX(), getY()));
     	if (turningRight) {
-    		radians -= Math.PI*0.5*delta;
+    		radians -= TURNING_RADIUS*delta;
     	}
     	if (turningLeft) {
-    		radians += Math.PI*0.5*delta;
+    		radians += TURNING_RADIUS*delta;
     	}
-    	setX(getX() + speed*delta* (float) Math.cos(radians));
-    	setY(getY() + speed*delta* (float) Math.sin(radians));
+    	setX(getX() + SPEED*delta* (float) Math.cos(radians));
+    	setY(getY() + SPEED*delta* (float) Math.sin(radians));
     }
 	
 	private void setDefaultValues(int playerNbr){
