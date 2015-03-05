@@ -35,7 +35,6 @@ public class GameMenu implements Screen{
 	public GameMenu(int nbrOfPlayers) {
 		for(int i = 0; i < nbrOfPlayers; i++) {
 			curves.add(new Curve(i));
-			
 		}
 		nbrOfPlayersLabel = new Label(Integer.toString(curves.size()), skin); //TODO: is label best here?
 		

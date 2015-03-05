@@ -6,13 +6,43 @@ import se.daniel.game.Main;
 import se.daniel.game.models.Curve;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import java.util.Random;
 import java.math.*;
 public class GameScreen implements Screen{
-	private Stage stage = new Stage();
+	private Stage stage = new Stage() {
+		@Override
+	    public boolean keyDown(int keyCode) {
+			for (Curve curve : curves) {
+				if (keyCode == curve.getKeyRight()) {
+					curve.setTurningRight(true);
+					return true;
+				}
+				if (keyCode == curve.getKeyLeft()) {
+					curve.setTurningLeft(true);
+					return true;
+				}
+			}
+			return false;
+		}
+		@Override
+	    public boolean keyUp(int keyCode) {
+			for (Curve curve : curves) {
+				if (keyCode == curve.getKeyRight()) {
+					curve.setTurningRight(false);
+					return true;
+				}
+				if (keyCode == curve.getKeyLeft()) {
+					curve.setTurningLeft(false);
+					return true;
+				}
+			}
+			return false;
+		}
+	};
 	private ArrayList<Curve> curves;
 	public GameScreen(ArrayList<Curve> curves){
 		this.curves = curves;
@@ -24,6 +54,7 @@ public class GameScreen implements Screen{
 	@Override
 	public void show() {
 		initializeCurves();
+		Gdx.input.setInputProcessor(stage);
 	}
 
 	@Override
