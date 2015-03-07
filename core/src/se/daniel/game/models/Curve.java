@@ -23,13 +23,19 @@ public class Curve extends Actor{
 	private int keyRight;
 	private Table table;
 	private double radians;
-	private static final double TURNING_RADIUS = Math.PI * 0.4;
-	private static final float SPEED = 50;
+	
+	private static final double TURNING_SPEED = Math.PI * 0.7;
+	private static final float SPEED = 60;
+	private static final float RADIUS = 3.0f;
+	
+	private boolean makesHole = false;
 	private boolean projectionMatrixSet;
 	private ShapeRenderer shapeRenderer;
 	private ArrayList<Pair<Float, Float>> tail;
 	private boolean turningRight;
 	private boolean turningLeft;
+	private boolean alive = true;
+	private int score = 0; 
 	public Curve(int playerNbr){
 		super();
 		shapeRenderer = new ShapeRenderer();
@@ -53,27 +59,110 @@ public class Curve extends Actor{
         }
         shapeRenderer.begin(ShapeType.Filled);
         shapeRenderer.setColor(getColor());
-        shapeRenderer.circle(getX(), getY(), 3.0f);
+        shapeRenderer.circle(getX(), getY(), RADIUS);
         for(Pair<Float, Float> tailPart : tail) {
         	shapeRenderer.circle(tailPart.fst, tailPart.snd, 3.0f);
         }
-        shapeRenderer.end();
+        /*
+        shapeRenderer.setColor(Color.WHITE);
+        shapeRenderer.circle(Math.round(getX() + (RADIUS +1) * (float) Math.cos(radians)),
+				  Math.round(getY() + (RADIUS +1) * (float) Math.sin(radians)), 1);
+
+		shapeRenderer.circle(Math.round(getX() + (RADIUS +1) * (float) Math.cos(radians + Math.PI/2)),
+				  Math.round(getY() + (RADIUS +1) * (float) Math.sin(radians + Math.PI/2)), 1);
+
+		shapeRenderer.circle(Math.round(getX() + (RADIUS +1) * (float) Math.cos(radians - Math.PI/2)),
+				  Math.round(getY() + (RADIUS +1) * (float) Math.sin(radians - Math.PI/2)) , 1);
         
+        */
+        shapeRenderer.end();
         batch.begin();
     }
     @Override
     public void act(float delta){
-    	tail.add(new Pair<Float, Float>(getX(), getY()));
+    	if(!alive) {
+    		return;
+    	}
+    	
+
     	if (turningRight) {
-    		radians -= TURNING_RADIUS*delta;
+    		radians -= TURNING_SPEED*delta;
     	}
     	if (turningLeft) {
-    		radians += TURNING_RADIUS*delta;
+    		radians += TURNING_SPEED*delta;
     	}
+    	float oldX = getX();
+    	float oldY = getY();
     	setX(getX() + SPEED*delta* (float) Math.cos(radians));
     	setY(getY() + SPEED*delta* (float) Math.sin(radians));
+    	
+    	 
+    	if (Math.round(oldX) != Math.round(getX()) || Math.round(oldY) != Math.round(getY())) {
+        	// No need to print subpixel precision for this game.
+    		if(!makesHole) {
+        		tail.add(new Pair<Float, Float>(getX(), getY()));
+        	}
+        	// Only needs to check collision at new pixel. Otherwise just collides with ourself
+	    	if (checkCollision()) {
+	    		score += getPoints();
+	    		alive = false;
+	    		
+	    	}
+    	}
     }
 	
+	private int getPoints() {
+		int points = 0;
+		for (Actor actor : getStage().getActors()) {
+			if(!((Curve) actor).isAlive()) {
+				points++;
+			}
+		}
+		return points;
+	}
+
+	private boolean checkCollision() {
+		GameStage stage = (GameStage) getStage();
+		Color frontColor = stage.getPixelColor(Math.round(getX() + (RADIUS +1)  * (float) Math.cos(radians)),
+											  Math.round(getY() + (RADIUS + 1) * (float) Math.sin(radians)));
+		
+		Color leftColor = stage.getPixelColor(Math.round(getX() + (RADIUS + 1) * (float) Math.cos(radians + Math.PI/2)),
+				  							  Math.round(getY() + (RADIUS + 1)* (float) Math.sin(radians + Math.PI/2)));
+
+		Color rightColor = stage.getPixelColor(Math.round(getX() + (RADIUS + 1) * (float) Math.cos(radians - Math.PI/2)),
+				  							  Math.round(getY() + (RADIUS + 1) * (float) Math.sin(radians - Math.PI/2)));
+		
+		
+		if (!frontColor.equals(Color.BLACK) || !leftColor.equals(Color.BLACK)|| !rightColor.equals(Color.BLACK)) {
+			System.out.println("");
+			System.out.print("collision: ");
+			System.out.print("curve color: " + getColor().toString());
+		}
+		if (!frontColor.equals(Color.BLACK)) {
+			System.out.print(" front color " +frontColor.toString());
+			if( frontColor.equals(getColor())) {
+				System.out.print(" self collision!");
+			}
+		}
+		if (!leftColor.equals(Color.BLACK)) {
+			System.out.print(" left color " +leftColor.toString());
+			if( leftColor.equals(getColor())) {
+				System.out.print(" self collision!");
+			}
+		}
+		if (!rightColor.equals(Color.BLACK)) {
+			System.out.print(" right color " +rightColor.toString());
+			if( rightColor.equals(getColor())) {
+				System.out.print(" self collision!");
+			}
+		}
+		
+		if (!frontColor.equals(Color.BLACK) || !leftColor.equals(Color.BLACK)|| !rightColor.equals(Color.BLACK)) {
+			return true;
+		}
+		return false;
+	}
+
 	private void setDefaultValues(int playerNbr){
 		switch(playerNbr) {
 		case 0:
@@ -91,6 +180,31 @@ public class Curve extends Actor{
 			setKeyLeft(Keys.K);
 			setKeyRight(Keys.L);
 			setColor(Color.GREEN);
+			break;
+		case 3:
+			setKeyLeft(Keys.LEFT);
+			setKeyRight(Keys.RIGHT);
+			setColor(Color.MAGENTA);
+			break;
+		case 4:
+			setKeyLeft(Keys.BUTTON_A);
+			setKeyRight(Keys.BUTTON_B);
+			setColor(Color.ORANGE);
+			break;
+		case 5:
+			setKeyLeft(Keys.NUM_9);
+			setKeyRight(Keys.NUM_0);
+			setColor(Color.PINK);
+			break;
+		case 6:
+			setKeyLeft(Keys.NUM_1);
+			setKeyRight(Keys.NUM_2);
+			setColor(Color.WHITE);
+			break;
+		case 7:
+			setKeyLeft(Keys.NUMPAD_2);
+			setKeyRight(Keys.NUMPAD_3);
+			setColor(Color.CYAN);
 			break;
 			
 		default:
@@ -117,6 +231,13 @@ public class Curve extends Actor{
 	}
 	public Table getTable(){
 		return table;
+	}
+	
+	public boolean isAlive(){
+		return alive;
+	}
+	public void setAlive(boolean lifeStatus){
+		alive = lifeStatus;
 	}
 	private void createTable() {
 		Skin skin = new Skin(Gdx.files.internal("skins/uiskin.json"));

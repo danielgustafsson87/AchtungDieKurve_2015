@@ -4,65 +4,40 @@ import java.util.ArrayList;
 
 import se.daniel.game.Main;
 import se.daniel.game.models.Curve;
-
+import se.daniel.game.models.GameStage;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import java.util.Random;
-import java.math.*;
+
 public class GameScreen implements Screen{
-	private Stage stage = new Stage() {
-		@Override
-	    public boolean keyDown(int keyCode) {
-			for (Curve curve : curves) {
-				if (keyCode == curve.getKeyRight()) {
-					curve.setTurningRight(true);
-					return true;
-				}
-				if (keyCode == curve.getKeyLeft()) {
-					curve.setTurningLeft(true);
-					return true;
-				}
-			}
-			return false;
-		}
-		@Override
-	    public boolean keyUp(int keyCode) {
-			for (Curve curve : curves) {
-				if (keyCode == curve.getKeyRight()) {
-					curve.setTurningRight(false);
-					return true;
-				}
-				if (keyCode == curve.getKeyLeft()) {
-					curve.setTurningLeft(false);
-					return true;
-				}
-			}
-			return false;
-		}
-	};
+	private GameStage stage;
+		
 	private ArrayList<Curve> curves;
 	public GameScreen(ArrayList<Curve> curves){
 		this.curves = curves;
-		/*
-		 * Get all curves with there controls, color and other stuff
-		*/
+		this.stage = new GameStage();
+		initializeCurves();
+
 	}
 
 	@Override
 	public void show() {
-		initializeCurves();
+		Gdx.gl.glClearColor(0, 0, 0, 1);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		stage.draw();
+		
 		Gdx.input.setInputProcessor(stage);
 	}
 
 	@Override
 	public void render(float delta) {
+		stage.updatePixmap();
+		stage.act();
+		
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
-		stage.act();
 		stage.draw();
 		
 	}
@@ -93,7 +68,7 @@ public class GameScreen implements Screen{
 
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
+		stage.dispose();
 		
 	}
 	private void initializeCurves(){
@@ -103,8 +78,7 @@ public class GameScreen implements Screen{
 			curve.setX(rnd.nextInt(Main.WIDTH));
 			curve.setY(rnd.nextInt(Main.HEIGHT));
 			
-			//random direction
-			
+			//random direction			
 			curve.setRadians(Math.toRadians(rnd.nextInt(360)));
 			
 			stage.addActor(curve);
