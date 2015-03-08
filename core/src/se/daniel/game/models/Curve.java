@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
@@ -36,16 +37,19 @@ public class Curve extends Actor{
 	private boolean turningLeft;
 	private boolean alive = true;
 	private int score = 0; 
+	private Label scoreLabel;
 	public Curve(int playerNbr){
 		super();
 		shapeRenderer = new ShapeRenderer();
 		projectionMatrixSet = false;
 		table = new Table();
+		
 		setName("Player" + Integer.toString(playerNbr +1));
 		tail = new ArrayList<Pair<Float, Float>>();
 		setDebug(true);
 
 		setDefaultValues(playerNbr);
+		scoreLabel = new Label(getName() + " " + Integer.toString(score), new Skin(Gdx.files.internal("skins/uiskin.json")));
 		createTable();
 		
 	}
@@ -104,32 +108,33 @@ public class Curve extends Actor{
         	}
         	// Only needs to check collision at new pixel. Otherwise just collides with ourself
 	    	if (checkCollision()) {
-	    		score += getPoints();
+	    		addPoints();
 	    		alive = false;
 	    		
 	    	}
     	}
     }
 	
-	private int getPoints() {
+	public void addPoints() {
 		int points = 0;
-		for (Actor actor : getStage().getActors()) {
-			if(!((Curve) actor).isAlive()) {
+		for (Curve curve : ((GameStage)getParent()).getCurves()) {
+			if(!curve.isAlive()) {
 				points++;
 			}
 		}
-		return points;
+		scoreLabel.setText(getName() + " " + Integer.toString(score));
+		score += points;
 	}
 
 	private boolean checkCollision() {
-		GameStage stage = (GameStage) getStage();
-		Color frontColor = stage.getPixelColor(Math.round(getX() + (RADIUS +1)  * (float) Math.cos(radians)),
+		GameStage gameStage = (GameStage) getParent();
+		Color frontColor = gameStage.getPixelColor(Math.round(getX() + (RADIUS +1)  * (float) Math.cos(radians)),
 											  Math.round(getY() + (RADIUS + 1) * (float) Math.sin(radians)));
 		
-		Color leftColor = stage.getPixelColor(Math.round(getX() + (RADIUS + 1) * (float) Math.cos(radians + Math.PI/2)),
+		Color leftColor = gameStage.getPixelColor(Math.round(getX() + (RADIUS + 1) * (float) Math.cos(radians + Math.PI/2)),
 				  							  Math.round(getY() + (RADIUS + 1)* (float) Math.sin(radians + Math.PI/2)));
 
-		Color rightColor = stage.getPixelColor(Math.round(getX() + (RADIUS + 1) * (float) Math.cos(radians - Math.PI/2)),
+		Color rightColor = gameStage.getPixelColor(Math.round(getX() + (RADIUS + 1) * (float) Math.cos(radians - Math.PI/2)),
 				  							  Math.round(getY() + (RADIUS + 1) * (float) Math.sin(radians - Math.PI/2)));
 		
 		
@@ -276,6 +281,21 @@ public class Curve extends Actor{
 
 	public void setTurningLeft(boolean turningLeft) {
 		this.turningLeft = turningLeft;
+	}
+
+	public int getScore() {
+		// TODO Auto-generated method stub
+		return score;
+	}
+	public void removeTail(){
+		tail.clear();
+	}
+
+	public String toTableString() {
+		return getName() + " " +Integer.toString(score);
+	}
+	public Label getScoreLabel(){
+		return scoreLabel;
 	}
 	
 

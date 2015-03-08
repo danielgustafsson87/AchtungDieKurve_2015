@@ -28,7 +28,7 @@ public class GameMenu implements Screen{
 	private Label players = new Label("players:", skin);
 	private TextButton arrowLeft = new TextButton("<", skin);
 	private TextButton arrowRight = new TextButton(">", skin);
-	private Label nbrOfPlayersLabel ;
+	private Label nbrOfPlayersLabel;
 	private TextButton startButton = new TextButton("Start", skin);
 	private TextButton backButton = new TextButton("Back", skin);
 	
@@ -112,8 +112,7 @@ public class GameMenu implements Screen{
 
 	@Override
 	public void resize(int width, int height) {
-		// TODO Auto-generated method stub
-		
+				
 	}
 
 	@Override
