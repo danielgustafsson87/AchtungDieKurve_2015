@@ -1,6 +1,8 @@
 package se.daniel.game.screens;
 
 import java.util.ArrayList;
+
+import se.daniel.game.Main;
 import se.daniel.game.models.Curve;
 import se.daniel.game.models.GameStage;
 import com.badlogic.gdx.Gdx;
@@ -8,16 +10,24 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.Value;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 
 
 public class GameScreen implements Screen, InputProcessor{
 	private GameStage gameStage;
+	private Table scoreTable;
 	private Stage mainStage;
+	private Skin skin;
+	private Value gameWidth;
+	private Value gameHeight;
 	public GameScreen(ArrayList<Curve> curves){
 		Skin skin = new Skin(Gdx.files.internal("skins/uiskin.json"));
 		this.mainStage = new Stage();
@@ -34,18 +44,25 @@ public class GameScreen implements Screen, InputProcessor{
 			scoreTable.row();
 		}
 		initializeGame(curves);
+		//mainStage.setViewport(new FitViewport((float) Main.WIDTH, (float) Main.HEIGHT));
 		
-
-		Table mainTable = new Table();
-		mainTable.add(gameStage);
-		mainTable.add(scoreTable);
-		mainStage.addActor(mainTable);
 	}
 
 	@Override
 	public void show() {
-		Gdx.gl.glClearColor(0, 0, 0, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+		Table mainTable = new Table();
+		mainTable.setDebug(true);
+		
+		//mainTable.add(gameStage).size(mainStage.getViewport().getScreenHeight() * 0.9f, mainStage.getViewport().getScreenHeight());
+		//mainTable.add(scoreTable).size(mainStage.getViewport().getScreenHeight() * 0.1f, mainStage.getViewport().getScreenHeight());
+		mainTable.add(gameStage);
+		System.out.print(mainTable.getMaxWidth());		
+		mainTable.add(scoreTable);
+				
+		mainTable.setFillParent(true);
+		mainStage.addActor(mainTable);
+		
 		
 		Gdx.input.setInputProcessor(this);
 	}
@@ -64,8 +81,7 @@ public class GameScreen implements Screen, InputProcessor{
 
 	@Override
 	public void resize(int width, int height) {
-		// TODO Auto-generated method stub
-		
+		// TODO: needs to do stuff here
 	}
 
 	@Override
@@ -82,13 +98,14 @@ public class GameScreen implements Screen, InputProcessor{
 
 	@Override
 	public void hide() {
-		// TODO Auto-generated method stub
+		dispose();
 		
 	}
 
 	@Override
 	public void dispose() {
 		mainStage.dispose();
+		skin.dispose();
 		
 	}
 	private void initializeGame(ArrayList<Curve> curves){
