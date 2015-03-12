@@ -16,7 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 public class GameStage extends Group{	
-	private static final int INIT_TIME = 2000;
+	private static final int INIT_TIME = 1500;
 	Pixmap pixmap;
 	private int ScoreToWin = 10; //to be changeable
 	private long gameStartTime;

@@ -1,6 +1,7 @@
 package se.daniel.game.models;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -38,6 +39,10 @@ public class Curve extends Actor{
 	private boolean alive = true;
 	private int score = 0; 
 	private Label scoreLabel;
+	
+	private long holeStartTime = 0;
+	private long HOLE_LENGTH = 350;
+	
 	public Curve(int playerNbr){
 		super();
 		shapeRenderer = new ShapeRenderer();
@@ -87,6 +92,11 @@ public class Curve extends Actor{
     	if(!alive) {
     		return;
     	}
+    	// if hole was made. decide next hole
+    	if (holeStartTime + HOLE_LENGTH < System.currentTimeMillis()) {
+    		Random rnd = new Random();
+    		holeStartTime = System.currentTimeMillis() + 1000 + rnd.nextInt(4000);
+    	}
     	
 
     	if (turningRight) {
@@ -103,14 +113,13 @@ public class Curve extends Actor{
     	 
     	if (Math.round(oldX) != Math.round(getX()) || Math.round(oldY) != Math.round(getY())) {
         	// No need to print subpixel precision for this game.
-    		if(!makesHole) {
+    		if(System.currentTimeMillis() < holeStartTime) {
         		tail.add(new Pair<Float, Float>(getX(), getY()));
         	}
         	// Only needs to check collision at new pixel. Otherwise just collides with ourself
 	    	if (checkCollision()) {
 	    		addPoints();
 	    		alive = false;
-	    		
 	    	}
     	}
     }
@@ -302,6 +311,14 @@ public class Curve extends Actor{
 	}
 	public Label getScoreLabel(){
 		return scoreLabel;
+	}
+
+	public long getHoleStartTime() {
+		return holeStartTime;
+	}
+
+	public void setHoleStartTime(long holeStartTime) {
+		holeStartTime = holeStartTime;
 	}
 	
 
