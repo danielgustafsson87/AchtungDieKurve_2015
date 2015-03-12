@@ -246,14 +246,20 @@ public class Curve extends Actor{
 	}
 	private void createTable() {
 		Skin skin = new Skin(Gdx.files.internal("skins/uiskin.json"));
-		table.add(new TextField(getName(), skin));
+		TextField playerName = new TextField(getName(), skin);
+		playerName.setColor(getColor());
+		table.add();
 		if (keyLeft != -1) {
-			table.add(new TextField(Keys.toString(keyLeft), skin));
+			TextField leftKeySetter = new TextField(Keys.toString(keyLeft), skin);
+			leftKeySetter.setColor(getColor());
+			table.add(leftKeySetter);
 		} else {
 			table.add(new TextField("Not set", skin));
 		}
 		if (keyRight != -1) {
-			table.add(new TextField(Keys.toString(keyRight), skin));
+			TextField rightKeySetter = new TextField(Keys.toString(keyRight), skin);
+			rightKeySetter.setColor(getColor());
+			table.add(rightKeySetter);
 		} else {
 			table.add(new TextField("not set", skin));
 		}

@@ -68,7 +68,7 @@ public class MainMenu implements Screen{
 
 	@Override
 	public void resize(int width, int height) {
-		// TODO Auto-generated method stub
+		stage.getViewport().update(width, height, true);
 		
 	}
 

@@ -29,14 +29,14 @@ public class GameScreen implements Screen, InputProcessor{
 	private Value gameWidth;
 	private Value gameHeight;
 	public GameScreen(ArrayList<Curve> curves){
-		Skin skin = new Skin(Gdx.files.internal("skins/uiskin.json"));
+		skin = new Skin(Gdx.files.internal("skins/uiskin.json")); 
 		this.mainStage = new Stage();
 		this.gameStage = new GameStage();
 		Table scoreTable = new Table() {
 			@Override
 			public void act(float delta) {
 				super.act(delta);
-				
+				//TODO: remove if not used...
 			}
 		};
 		for (Curve curve : curves) {
@@ -81,7 +81,7 @@ public class GameScreen implements Screen, InputProcessor{
 
 	@Override
 	public void resize(int width, int height) {
-		// TODO: needs to do stuff here
+		mainStage.getViewport().update(width, height, true);
 	}
 
 	@Override
@@ -104,8 +104,9 @@ public class GameScreen implements Screen, InputProcessor{
 
 	@Override
 	public void dispose() {
-		mainStage.dispose();
 		skin.dispose();
+		mainStage.dispose();
+		
 		
 	}
 	private void initializeGame(ArrayList<Curve> curves){
