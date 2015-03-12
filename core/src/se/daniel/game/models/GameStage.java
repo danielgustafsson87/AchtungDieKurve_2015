@@ -16,11 +16,16 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 public class GameStage extends Group{	
+	private static final int INIT_TIME = 2000;
 	Pixmap pixmap;
 	private int ScoreToWin = 10; //to be changeable
+	private long gameStartTime;
 	
 	@Override
 	public void act(float delta){
+		if (System.currentTimeMillis() < gameStartTime + INIT_TIME) {
+			return;
+		}
 		super.act(delta);
 		//check if only 1 player alive
 
@@ -97,6 +102,7 @@ public class GameStage extends Group{
 	}
 	
 	public void startNewGame() {
+		gameStartTime = System.currentTimeMillis();
 		Random rnd = new Random();
 		for (Curve curve : getCurves()) {
 			//random position
