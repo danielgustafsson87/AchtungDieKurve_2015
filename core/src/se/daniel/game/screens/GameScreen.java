@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import se.daniel.game.Main;
 import se.daniel.game.models.Curve;
 import se.daniel.game.models.GameStage;
+import se.daniel.game.models.Map;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
@@ -15,11 +17,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.Value;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
-
-
 
 public class GameScreen implements Screen, InputProcessor{
 	private GameStage gameStage;
@@ -28,9 +25,10 @@ public class GameScreen implements Screen, InputProcessor{
 	private Skin skin;
 	private int gameWidth = 800;
 	private int gameHeight = 640;
-	public GameScreen(ArrayList<Curve> curves){
+	public GameScreen(ArrayList<Curve> curves, Map map){
 		skin = new Skin(Gdx.files.internal("skins/uiskin.json"));
-		
+		gameWidth = map.getWidth();
+		gameHeight = map.getHeight();
 		this.mainStage = new Stage();
 		//TODO: game width and height is input from GameMenu
 		mainStage.getViewport().setWorldSize(gameWidth, gameHeight);
