@@ -25,14 +25,14 @@ public class GameScreen implements Screen, InputProcessor{
 	private Skin skin;
 	private int gameWidth = 800;
 	private int gameHeight = 640;
-	public GameScreen(ArrayList<Curve> curves, Map map){
+	public GameScreen(ArrayList<Curve> curves, Map map, int scoreToWin){
 		skin = new Skin(Gdx.files.internal("skins/uiskin.json"));
 		gameWidth = map.getWidth();
 		gameHeight = map.getHeight();
 		this.mainStage = new Stage();
 		//TODO: game width and height is input from GameMenu
 		mainStage.getViewport().setWorldSize(gameWidth, gameHeight);
-		this.gameStage = new GameStage();
+		this.gameStage = new GameStage(scoreToWin);
 		
 		
 		Table scoreTable = new Table() {
@@ -47,7 +47,7 @@ public class GameScreen implements Screen, InputProcessor{
 			scoreTable.row();
 		}
 		Table mainTable = new Table();
-		mainTable.add(gameStage).size(gameWidth* 0.9f, gameHeight);
+		mainTable.add(gameStage).size(gameWidth * 0.9f, gameHeight);
 		mainTable.add(scoreTable).size(gameWidth * 0.1f, gameHeight);
 		mainTable.setFillParent(true);
 		mainTable.setDebug(true);

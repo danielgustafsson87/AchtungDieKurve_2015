@@ -17,9 +17,9 @@ public class Map {
 	private Label label;
 	
 	
-	public Map(Skin skin){
-		mapSize = MEDIUM;
+	public Map(Skin skin) {
 		label = new Label("Medium", skin);
+		setSize(MEDIUM);
 	}
 	
 	public void increaseSize() {

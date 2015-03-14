@@ -18,9 +18,14 @@ import com.badlogic.gdx.utils.ScreenUtils;
 public class GameStage extends Group{	
 	private static final int INIT_TIME = 1500;
 	Pixmap pixmap;
-	private int ScoreToWin = 10; //to be changeable
+	private int ScoreToWin;
 	private long gameStartTime;
 	private final static int BORDER_OFFSET = 30;
+	
+	public GameStage(int scoreToWin) {
+		super();
+		this.ScoreToWin = scoreToWin;
+	}
 	
 	@Override
 	public void act(float delta){
@@ -107,7 +112,8 @@ public class GameStage extends Group{
 		Random rnd = new Random();
 		for (Curve curve : getCurves()) {
 			//random position not to close to sides
-
+			System.out.print((float) (getStage().getViewport().getWorldWidth()));
+			//System.out.print((float) (BORDER_OFFSET + rnd.nextInt((int) getStage().getViewport().getWorldWidth()) - (2 * BORDER_OFFSET)));
 			curve.setX((float) (BORDER_OFFSET + rnd.nextInt((int) getStage().getViewport().getWorldWidth()) - (2 * BORDER_OFFSET)));
 			curve.setY((float) (BORDER_OFFSET + rnd.nextInt((int) getStage().getViewport().getWorldHeight()) - (2 * BORDER_OFFSET)));
 			

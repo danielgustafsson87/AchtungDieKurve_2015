@@ -9,6 +9,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -29,9 +30,11 @@ public class GameMenu implements Screen{
 	private TextButton backButton = new TextButton("Back", skin);
 	
 	private Label nbrOfPlayersLabel;
+	private Label scoreLabel;
 	private Map map;
-	
+	private int scoreToWin = 30;
 	public GameMenu(int nbrOfPlayers) {
+		scoreLabel = new Label(Integer.toString(scoreToWin), skin);
 		map = new Map(skin);
 		for(int i = 0; i < nbrOfPlayers; i++) {
 			curves.add(new Curve(i));
@@ -43,7 +46,7 @@ public class GameMenu implements Screen{
 		startButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				((Game) Gdx.app.getApplicationListener()).setScreen(new GameScreen(curves, map));
+				((Game) Gdx.app.getApplicationListener()).setScreen(new GameScreen(curves, map, scoreToWin));
 			}
 		});
 		backButton.addListener(new ClickListener() {
@@ -52,8 +55,9 @@ public class GameMenu implements Screen{
 				((Game) Gdx.app.getApplicationListener()).setScreen(new MainMenu());
 			}
 		});
-		table.add(getNbrOfPlayersTable(skin));
-		table.add(getMapTable(skin));
+		table.add(getNbrOfPlayersTable(skin)).row();
+		table.add(getMapTable(skin)).row();
+		table.add(getScoreTable(skin));
 		table.row();
 		
 		for(Curve curve: curves) {
@@ -140,11 +144,42 @@ public class GameMenu implements Screen{
 		Table mapTable = new Table();
 		mapTable.add(new Label("Map size:", skin)).left();
 		mapTable.add(arrowLeft).padLeft(20);
-		mapTable.add(map.getLabel()).width(100);
+		mapTable.add(map.getLabel()).width(100).center();
 		mapTable.add(arrowRight);
 		return mapTable;
 	}
 
+	private Table getScoreTable(Skin skin2) {
+		
+		Label scoreTextLabel = new Label("Points to win:", skin);
+		TextButton arrowLeft = new TextButton("<", skin);
+		arrowLeft.addListener(new ClickListener(){
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				if (scoreToWin > 20) {
+					scoreToWin -= 10;
+				}
+				scoreLabel.setText((Integer.toString(scoreToWin)));
+			}
+		});
+		TextButton arrowRight = new TextButton(">", skin);
+		arrowRight.addListener(new ClickListener(){
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				if (scoreToWin < 200) {
+					scoreToWin += 10;
+				}
+				
+				scoreLabel.setText((Integer.toString(scoreToWin)));
+			}
+		});
+		Table scoreTable = new Table();
+		scoreTable.add(scoreTextLabel).left();
+		scoreTable.add(arrowLeft).padLeft(20);
+		scoreTable.add(scoreLabel);
+		scoreTable.add(arrowRight);
+		return scoreTable;
+	}
 
 	@Override
 	public void resize(int width, int height) {
