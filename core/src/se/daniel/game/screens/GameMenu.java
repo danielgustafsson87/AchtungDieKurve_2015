@@ -140,7 +140,7 @@ public class GameMenu implements Screen{
 		Table mapTable = new Table();
 		mapTable.add(new Label("Map size:", skin)).left();
 		mapTable.add(arrowLeft).padLeft(20);
-		mapTable.add(map.getLabel());
+		mapTable.add(map.getLabel()).width(100);
 		mapTable.add(arrowRight);
 		return mapTable;
 	}

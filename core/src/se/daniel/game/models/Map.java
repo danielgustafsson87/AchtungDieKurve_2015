@@ -48,6 +48,7 @@ public class Map {
 			width = 1200;
 			height = 960;
 			label.setText("Large");
+			return;
 		case EXTRA_LARGE:
 			mapSize = EXTRA_LARGE;
 			width = 1600;
