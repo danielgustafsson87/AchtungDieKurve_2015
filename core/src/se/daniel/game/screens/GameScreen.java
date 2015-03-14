@@ -26,12 +26,17 @@ public class GameScreen implements Screen, InputProcessor{
 	private Table scoreTable;
 	private Stage mainStage;
 	private Skin skin;
-	private Value gameWidth;
-	private Value gameHeight;
+	private int gameWidth = 800;
+	private int gameHeight = 640;
 	public GameScreen(ArrayList<Curve> curves){
-		skin = new Skin(Gdx.files.internal("skins/uiskin.json")); 
+		skin = new Skin(Gdx.files.internal("skins/uiskin.json"));
+		
 		this.mainStage = new Stage();
+		//TODO: game width and height is input from GameMenu
+		mainStage.getViewport().setWorldSize(gameWidth, gameHeight);
 		this.gameStage = new GameStage();
+		
+		
 		Table scoreTable = new Table() {
 			@Override
 			public void act(float delta) {

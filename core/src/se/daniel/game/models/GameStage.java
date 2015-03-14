@@ -20,6 +20,7 @@ public class GameStage extends Group{
 	Pixmap pixmap;
 	private int ScoreToWin = 10; //to be changeable
 	private long gameStartTime;
+	private final static int BORDER_OFFSET = 30;
 	
 	@Override
 	public void act(float delta){
@@ -105,9 +106,9 @@ public class GameStage extends Group{
 		gameStartTime = System.currentTimeMillis();
 		Random rnd = new Random();
 		for (Curve curve : getCurves()) {
-			//random position
-			curve.setX(rnd.nextInt(Main.WIDTH));
-			curve.setY(rnd.nextInt(Main.HEIGHT));
+			//random position not to close to sides
+			curve.setX(BORDER_OFFSET + rnd.nextInt((int) getStage().getViewport().getWorldWidth()) - (2 * BORDER_OFFSET));
+			curve.setY(BORDER_OFFSET + rnd.nextInt((int) getStage().getViewport().getWorldWidth()) - 2 * BORDER_OFFSET));
 			
 			//random direction			
 			curve.setRadians(Math.toRadians(rnd.nextInt(360)));
