@@ -48,6 +48,13 @@ public class GameScreen implements Screen, InputProcessor{
 			scoreTable.add(curve.getScoreLabel());
 			scoreTable.row();
 		}
+		Table mainTable = new Table();
+		mainTable.add(gameStage).size(gameWidth* 0.9f, gameHeight);
+		mainTable.add(scoreTable).size(gameWidth * 0.1f, gameHeight);
+		mainTable.setFillParent(true);
+		mainTable.setDebug(true);
+		mainStage.addActor(mainTable);
+		
 		initializeGame(curves);
 		//mainStage.setViewport(new FitViewport((float) Main.WIDTH, (float) Main.HEIGHT));
 		
@@ -55,20 +62,6 @@ public class GameScreen implements Screen, InputProcessor{
 
 	@Override
 	public void show() {
-
-		Table mainTable = new Table();
-		mainTable.setDebug(true);
-		
-		//mainTable.add(gameStage).size(mainStage.getViewport().getScreenHeight() * 0.9f, mainStage.getViewport().getScreenHeight());
-		//mainTable.add(scoreTable).size(mainStage.getViewport().getScreenHeight() * 0.1f, mainStage.getViewport().getScreenHeight());
-		mainTable.add(gameStage);
-		System.out.print(mainTable.getMaxWidth());		
-		mainTable.add(scoreTable);
-				
-		mainTable.setFillParent(true);
-		mainStage.addActor(mainTable);
-		
-		
 		Gdx.input.setInputProcessor(this);
 	}
 

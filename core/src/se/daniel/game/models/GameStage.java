@@ -107,8 +107,9 @@ public class GameStage extends Group{
 		Random rnd = new Random();
 		for (Curve curve : getCurves()) {
 			//random position not to close to sides
-			curve.setX(BORDER_OFFSET + rnd.nextInt((int) getStage().getViewport().getWorldWidth()) - (2 * BORDER_OFFSET));
-			curve.setY(BORDER_OFFSET + rnd.nextInt((int) getStage().getViewport().getWorldWidth()) - 2 * BORDER_OFFSET));
+
+			curve.setX((float) (BORDER_OFFSET + rnd.nextInt((int) getStage().getViewport().getWorldWidth()) - (2 * BORDER_OFFSET)));
+			curve.setY((float) (BORDER_OFFSET + rnd.nextInt((int) getStage().getViewport().getWorldHeight()) - (2 * BORDER_OFFSET)));
 			
 			//random direction			
 			curve.setRadians(Math.toRadians(rnd.nextInt(360)));
