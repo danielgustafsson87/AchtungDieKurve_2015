@@ -36,12 +36,11 @@ public class GameStage extends Group{
 		//check if only 1 player alive
 
 		int maxScore = 0;
-		Curve aliveCurve = null;
+		int aliveCurves = 0;
 		for(Curve curve : getCurves()) {
 			if (curve.isAlive()) {
-				if (aliveCurve == null) {
-					aliveCurve = curve;
-				} else {
+				aliveCurves++;
+				if (aliveCurves > 1){
 					return;
 				}
 			}
@@ -49,10 +48,8 @@ public class GameStage extends Group{
 				maxScore = curve.getScore();
 			}
 		}
-		if (aliveCurve != null) {
-			aliveCurve.addPoints();
-		}
-		if (maxScore > ScoreToWin ) {
+		
+		if (maxScore > ScoreToWin) {
 			goToGameMenu();
 		} else {
 			startNewGame();
@@ -112,7 +109,6 @@ public class GameStage extends Group{
 		Random rnd = new Random();
 		for (Curve curve : getCurves()) {
 			//random position not to close to sides
-			System.out.print((float) (getStage().getViewport().getWorldWidth()));
 			//System.out.print((float) (BORDER_OFFSET + rnd.nextInt((int) getStage().getViewport().getWorldWidth()) - (2 * BORDER_OFFSET)));
 			curve.setX((float) (BORDER_OFFSET + rnd.nextInt((int) getStage().getViewport().getWorldWidth()) - (2 * BORDER_OFFSET)));
 			curve.setY((float) (BORDER_OFFSET + rnd.nextInt((int) getStage().getViewport().getWorldHeight()) - (2 * BORDER_OFFSET)));

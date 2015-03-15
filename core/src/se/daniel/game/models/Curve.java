@@ -51,10 +51,11 @@ public class Curve extends Actor{
 		
 		setName("Player" + Integer.toString(playerNbr +1));
 		tail = new ArrayList<Pair<Float, Float>>();
-		setDebug(true);
 
 		setDefaultValues(playerNbr);
-		scoreLabel = new Label(getName() + " " + Integer.toString(score), new Skin(Gdx.files.internal("skins/uiskin.json")));
+		scoreLabel = new Label(Integer.toString(score), new Skin(Gdx.files.internal("skins/uiskin.json")));
+		scoreLabel.setColor(getColor());
+		scoreLabel.setFontScale(3);
 		createTable();
 		
 	}
@@ -118,21 +119,24 @@ public class Curve extends Actor{
         	}
         	// Only needs to check collision at new pixel. Otherwise just collides with ourself
 	    	if (checkCollision()) {
-	    		addPoints();
 	    		alive = false;
+	    		givePoints();
+	    		
 	    	}
     	}
     }
 	
-	public void addPoints() {
-		int points = 0;
+	public void givePoints() {
 		for (Curve curve : ((GameStage)getParent()).getCurves()) {
-			if(!curve.isAlive()) {
-				points++;
+			if(curve.isAlive()) {
+				curve.addPoint();
 			}
 		}
-		scoreLabel.setText(getName() + " " + Integer.toString(score));
-		score += points;
+	}
+	public void addPoint() {
+		score++;
+		scoreLabel.setText(Integer.toString(score));
+		
 	}
 
 	private boolean checkCollision() {
@@ -257,7 +261,7 @@ public class Curve extends Actor{
 		Skin skin = new Skin(Gdx.files.internal("skins/uiskin.json"));
 		TextField playerName = new TextField(getName(), skin);
 		playerName.setColor(getColor());
-		table.add();
+		table.add(playerName);
 		if (keyLeft != -1) {
 			TextField leftKeySetter = new TextField(Keys.toString(keyLeft), skin);
 			leftKeySetter.setColor(getColor());

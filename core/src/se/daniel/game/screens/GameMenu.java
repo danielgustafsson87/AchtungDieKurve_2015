@@ -55,11 +55,15 @@ public class GameMenu implements Screen{
 				((Game) Gdx.app.getApplicationListener()).setScreen(new MainMenu());
 			}
 		});
-		table.add(getNbrOfPlayersTable(skin)).row();
-		table.add(getMapTable(skin)).row();
-		table.add(getScoreTable(skin));
-		table.row();
+		table.add(getNbrOfPlayersTable(skin)).left().row();
+		table.add(getMapTable(skin)).left().row();
+		table.add(getScoreTable(skin)).left().row();
 		
+		Table playerLabels = new Table();
+		playerLabels.add(new Label("Players:", skin));
+		playerLabels.add(new Label("Turn Left:", skin));
+		playerLabels.add(new Label("Turn Right:", skin));
+		playerTable.add(playerLabels).row();
 		for(Curve curve: curves) {
 			// to look on curves properties
 			playerTable.add(curve.getTable());
@@ -89,7 +93,7 @@ public class GameMenu implements Screen{
 	
 	private Table getNbrOfPlayersTable(Skin skin) {
 		nbrOfPlayersLabel = new Label(Integer.toString(curves.size()), skin); //TODO: is label best here?
-		Label players = new Label("players:", skin);
+		
 		TextButton arrowLeft = new TextButton("<", skin);
 		arrowLeft.addListener(new ClickListener(){
 			@Override
@@ -115,7 +119,7 @@ public class GameMenu implements Screen{
 			}
 		});
 		Table nbrOfPlayersTable = new Table();
-		nbrOfPlayersTable.add(players).left();
+		nbrOfPlayersTable.add(new Label("players:", skin)).left();
 		nbrOfPlayersTable.add(arrowLeft).padLeft(20);
 		nbrOfPlayersTable.add(nbrOfPlayersLabel);
 		nbrOfPlayersTable.add(arrowRight);
@@ -150,8 +154,6 @@ public class GameMenu implements Screen{
 	}
 
 	private Table getScoreTable(Skin skin2) {
-		
-		Label scoreTextLabel = new Label("Points to win:", skin);
 		TextButton arrowLeft = new TextButton("<", skin);
 		arrowLeft.addListener(new ClickListener(){
 			@Override
@@ -174,7 +176,7 @@ public class GameMenu implements Screen{
 			}
 		});
 		Table scoreTable = new Table();
-		scoreTable.add(scoreTextLabel).left();
+		scoreTable.add(new Label("Points to win:", skin)).left();
 		scoreTable.add(arrowLeft).padLeft(20);
 		scoreTable.add(scoreLabel);
 		scoreTable.add(arrowRight);
