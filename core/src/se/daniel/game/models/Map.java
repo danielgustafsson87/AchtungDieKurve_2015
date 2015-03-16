@@ -69,4 +69,8 @@ public class Map {
 	public int getHeight() {
 		return height;
 	}
+
+	public int getSize() {
+		return mapSize;
+	}
 }

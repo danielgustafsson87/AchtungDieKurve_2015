@@ -131,7 +131,7 @@ public class GameMenu implements Screen{
 		arrowLeft.addListener(new ClickListener(){
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				if (curves.size() > Map.MIN_SIZE) {
+				if (map.getSize() > Map.MIN_SIZE) {
 					map.decreaseSize();
 				}
 			}
@@ -140,7 +140,7 @@ public class GameMenu implements Screen{
 		arrowRight.addListener(new ClickListener(){
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				if (curves.size() < Map.MAX_SIZE) {
+				if (map.getSize() < Map.MAX_SIZE) {
 					map.increaseSize();
 				}
 			}
