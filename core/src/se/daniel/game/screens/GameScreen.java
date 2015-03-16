@@ -19,23 +19,21 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 public class GameScreen implements Screen, InputProcessor{
+	public static final int SCOREBAR_WIDTH = 50;
 	private GameStage gameStage;
 	private Table scoreTable;
 	private Stage mainStage;
 	private Skin skin;
-	private int gameWidth;
-	private int gameHeight;
 	public GameScreen(ArrayList<Curve> curves, Map map, int scoreToWin){
 		skin = new Skin(Gdx.files.internal("skins/uiskin.json"));
-		gameWidth = map.getWidth();
-		gameHeight = map.getHeight();
-		this.mainStage = new Stage();
-		//TODO: game width and height is input from GameMenu
-		mainStage.getViewport().setWorldSize(gameWidth, gameHeight);
+	 
+		//fit viewport is best I think
+		this.mainStage = new Stage(new StretchViewport(map.getWidth(), map.getHeight()));
 		this.gameStage = new GameStage(scoreToWin);
-		
 		
 		Table scoreTable = new Table() {
 			@Override
@@ -51,8 +49,8 @@ public class GameScreen implements Screen, InputProcessor{
 		scoreTable.setDebug(true);
 
 		Table mainTable = new Table();
-		mainTable.add(gameStage).size(gameWidth - 50, gameHeight);
-		mainTable.add(scoreTable).size(50, gameHeight);
+		mainTable.add(gameStage).size(mainStage.getWidth() - SCOREBAR_WIDTH, mainStage.getHeight());
+		mainTable.add(scoreTable).size(SCOREBAR_WIDTH, mainStage.getHeight());
 		mainTable.setFillParent(true);
 		mainTable.setDebug(true);
 		mainStage.addActor(mainTable);

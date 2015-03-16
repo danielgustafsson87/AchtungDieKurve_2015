@@ -111,7 +111,7 @@ public class Curve extends Actor{
     	setX(getX() + SPEED*delta* (float) Math.cos(radians));
     	setY(getY() + SPEED*delta* (float) Math.sin(radians));
     	
-    	 
+    	//TODO: go to screen coordinates
     	if (Math.round(oldX) != Math.round(getX()) || Math.round(oldY) != Math.round(getY())) {
         	// No need to print subpixel precision for this game.
     		if(System.currentTimeMillis() < holeStartTime) {
@@ -141,6 +141,7 @@ public class Curve extends Actor{
 
 	private boolean checkCollision() {
 		GameStage gameStage = (GameStage) getParent();
+
 		Color frontColor = gameStage.getPixelColor(Math.round(getX() + (RADIUS +1)  * (float) Math.cos(radians)),
 											  Math.round(getY() + (RADIUS + 1) * (float) Math.sin(radians)));
 		
@@ -167,15 +168,9 @@ public class Curve extends Actor{
 			System.out.print(" right color " +rightColor.toString());
 		}
 		*/
-		/*
-		if (!frontColor.equals(Color.BLACK) || !leftColor.equals(Color.BLACK)|| !rightColor.equals(Color.BLACK)) {
-			return true;
-		}
-		*/
 		
 		if (leftColor.b > 0.1 || leftColor.r > 0.1 || leftColor.g > 0.1) {
 			System.out.println("left collision " + getColor().toString() + " " + leftColor.toString());
-			
 			return true;
 		}
 		if (frontColor.b > 0.1 || frontColor.r > 0.1 || frontColor.g > 0.1) {
