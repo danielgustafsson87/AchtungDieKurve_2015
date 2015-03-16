@@ -11,7 +11,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -49,8 +51,8 @@ public class GameScreen implements Screen, InputProcessor{
 		scoreTable.setDebug(true);
 
 		Table mainTable = new Table();
-		mainTable.add(gameStage).size(gameWidth * 0.9f, gameHeight);
-		mainTable.add(scoreTable).size(gameWidth * 0.1f, gameHeight);
+		mainTable.add(gameStage).size(gameWidth - 50, gameHeight);
+		mainTable.add(scoreTable).size(50, gameHeight);
 		mainTable.setFillParent(true);
 		mainTable.setDebug(true);
 		mainStage.addActor(mainTable);
@@ -65,6 +67,7 @@ public class GameScreen implements Screen, InputProcessor{
 		Gdx.input.setInputProcessor(this);
 	}
 
+	int test = 0;
 	@Override
 	public void render(float delta) {
 		gameStage.updatePixmap();
@@ -72,7 +75,19 @@ public class GameScreen implements Screen, InputProcessor{
 		
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		
+		/*
+        SpriteBatch batch = new SpriteBatch();
+		Texture txt= new Texture(gameStage.getPixmap());
+
+		if (test == 10) {
+			batch.begin();
+			batch.draw(txt, 0, 0);
+			batch.end();  
+			test = 0;
+		}
+		else {
+			test++;
+		}*/
 		mainStage.draw();
 		
 	}
@@ -104,8 +119,6 @@ public class GameScreen implements Screen, InputProcessor{
 	public void dispose() {
 		skin.dispose();
 		mainStage.dispose();
-		
-		
 	}
 	private void initializeGame(ArrayList<Curve> curves){
 		for (Curve curve : curves) {

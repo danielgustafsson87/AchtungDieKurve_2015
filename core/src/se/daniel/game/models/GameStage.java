@@ -87,7 +87,11 @@ public class GameStage extends Group{
 		return false;
 	}
 	public void updatePixmap() {
+		//pixmap = ScreenUtils.getFrameBufferPixmap(0, 0, (int) getStage().getWidth(), (int) getStage().getHeight());
 		pixmap = ScreenUtils.getFrameBufferPixmap(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+	}
+	public Pixmap getPixmap() {
+		return pixmap;
 	}
 	private void goToGameMenu() {
 		pixmap.dispose();
@@ -99,8 +103,19 @@ public class GameStage extends Group{
 		//final Pixmap pixmap = new Pixmap(Main.WIDTH, Main.HEIGHT, Format.RGB888);
 		//ByteBuffer pixels = pixmap.getPixels();
 		//Gdx.gl.glReadPixels(0, 0, Main.WIDTH, Main.HEIGHT, GL20.GL_RGB, GL20.GL_UNSIGNED_BYTE, pixels);
+		
+		
+		//float yScreen = getStage().getViewport().getScreenHeight() - (y * getStage().getViewport().getScreenHeight() / getStage().getHeight());
+		float yScreen = y * getStage().getViewport().getScreenHeight() / getStage().getHeight();
+		float xScreen = x * getStage().getViewport().getScreenWidth() / getStage().getWidth();
+		/*System.out.println(".......");
+		System.out.println(y);
+		System.out.println(yScreen);
+		System.out.println(getStage().getViewport().getScreenHeight());
+		System.out.println(getStage().getHeight());
+		*/
 		Color color = new Color();
-		Color.rgba8888ToColor(color, pixmap.getPixel(x,y));
+		Color.rgba8888ToColor(color, pixmap.getPixel( (int) (xScreen + 0.5f), (int) (yScreen + 0.5f)));
 		return color;
 	}
 	
@@ -110,8 +125,8 @@ public class GameStage extends Group{
 		for (Curve curve : getCurves()) {
 			//random position not to close to sides
 			//System.out.print((float) (BORDER_OFFSET + rnd.nextInt((int) getStage().getViewport().getWorldWidth()) - (2 * BORDER_OFFSET)));
-			curve.setX((float) (BORDER_OFFSET + rnd.nextInt((int) getStage().getViewport().getWorldWidth()) - (2 * BORDER_OFFSET)));
-			curve.setY((float) (BORDER_OFFSET + rnd.nextInt((int) getStage().getViewport().getWorldHeight()) - (2 * BORDER_OFFSET)));
+			curve.setX((float) (BORDER_OFFSET + rnd.nextInt((int) getStage().getViewport().getWorldWidth() - (2 * BORDER_OFFSET))));
+			curve.setY((float) (BORDER_OFFSET + rnd.nextInt((int) getStage().getViewport().getWorldHeight()- (2 * BORDER_OFFSET))));
 			
 			//random direction			
 			curve.setRadians(Math.toRadians(rnd.nextInt(360)));

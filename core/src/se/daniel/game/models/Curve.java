@@ -57,7 +57,7 @@ public class Curve extends Actor{
 		scoreLabel.setColor(getColor());
 		scoreLabel.setFontScale(3);
 		createTable();
-		
+		setDebug(true);
 	}
 	
     @Override
@@ -150,32 +150,48 @@ public class Curve extends Actor{
 		Color rightColor = gameStage.getPixelColor(Math.round(getX() + (RADIUS + 1) * (float) Math.cos(radians - Math.PI/2)),
 				  							  Math.round(getY() + (RADIUS + 1) * (float) Math.sin(radians - Math.PI/2)));
 		
-		
+		/*
 		if (!frontColor.equals(Color.BLACK) || !leftColor.equals(Color.BLACK)|| !rightColor.equals(Color.BLACK)) {
 			System.out.println("");
 			System.out.print("collision: ");
 			System.out.print("curve color: " + getColor().toString());
 		}
+		
 		if (!frontColor.equals(Color.BLACK)) {
 			System.out.print(" front color " +frontColor.toString());
-			if( frontColor.equals(getColor())) {
-				System.out.print(" self collision!");
-			}
 		}
 		if (!leftColor.equals(Color.BLACK)) {
 			System.out.print(" left color " +leftColor.toString());
-			if( leftColor.equals(getColor())) {
-				System.out.print(" self collision!");
-			}
 		}
 		if (!rightColor.equals(Color.BLACK)) {
 			System.out.print(" right color " +rightColor.toString());
-			if( rightColor.equals(getColor())) {
-				System.out.print(" self collision!");
-			}
 		}
-		
+		*/
+		/*
 		if (!frontColor.equals(Color.BLACK) || !leftColor.equals(Color.BLACK)|| !rightColor.equals(Color.BLACK)) {
+			return true;
+		}
+		*/
+		
+		if (leftColor.b > 0.1 || leftColor.r > 0.1 || leftColor.g > 0.1) {
+			System.out.println("left collision " + getColor().toString() + " " + leftColor.toString());
+			
+			return true;
+		}
+		if (frontColor.b > 0.1 || frontColor.r > 0.1 || frontColor.g > 0.1) {
+			System.out.println("front collision " + getColor().toString() + " " + frontColor.toString());
+			return true;
+		}
+		if (rightColor.b > 0.1 || rightColor.r > 0.1 || rightColor.g > 0.1) {
+			System.out.println("right collision " + getColor().toString() + " " + rightColor.toString());
+			return true;
+		}
+		if (getX() < 0 || getX() > getStage().getWidth()) {
+			System.out.println("x outside screen " + getColor().toString());
+			return true;
+		}
+		if (getY() < 0 || getY() > getStage().getHeight()) {
+			System.out.println("x outside screen " + getColor().toString());
 			return true;
 		}
 		return false;
