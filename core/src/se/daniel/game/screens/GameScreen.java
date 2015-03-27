@@ -20,6 +20,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 public class GameScreen implements Screen, InputProcessor{
@@ -32,7 +33,8 @@ public class GameScreen implements Screen, InputProcessor{
 		skin = new Skin(Gdx.files.internal("skins/uiskin.json"));
 	 
 		//fit viewport is best I think
-		this.mainStage = new Stage(new StretchViewport(map.getWidth(), map.getHeight()));
+		
+		this.mainStage = new Stage(new ScreenViewport());
 		this.gameStage = new GameStage(scoreToWin);
 		
 		Table scoreTable = new Table() {
@@ -55,7 +57,7 @@ public class GameScreen implements Screen, InputProcessor{
 		mainTable.setDebug(true);
 		mainStage.addActor(mainTable);
 		
-		initializeGame(curves);
+		initializeGame(curves, map);
 		//mainStage.setViewport(new FitViewport((float) Main.WIDTH, (float) Main.HEIGHT));
 		
 	}
@@ -118,8 +120,10 @@ public class GameScreen implements Screen, InputProcessor{
 		skin.dispose();
 		mainStage.dispose();
 	}
-	private void initializeGame(ArrayList<Curve> curves){
+	private void initializeGame(ArrayList<Curve> curves, Map map){
 		for (Curve curve : curves) {
+			curve.setSpeed(map.getSpeed());
+			curve.setRadius(map.getRadius());
 			gameStage.addActor(curve);
 		}
 		gameStage.startNewGame();

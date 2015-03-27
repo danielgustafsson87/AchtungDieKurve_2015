@@ -29,8 +29,8 @@ public class Curve extends Actor{
 	private double radians;
 	
 	private static final double TURNING_SPEED = Math.PI * 0.7;
-	private static final float SPEED = 60;
-	private static final float RADIUS = 3.0f;
+	private  float speed = 60;
+	private  float radius = 3.0f;
 	
 	private boolean makesHole = false;
 	private boolean projectionMatrixSet;
@@ -71,9 +71,9 @@ public class Curve extends Actor{
         }
         shapeRenderer.begin(ShapeType.Filled);
         shapeRenderer.setColor(getColor());
-        shapeRenderer.circle(getX(), getY(), RADIUS);
+        shapeRenderer.circle(getX(), getY(), radius);
         for(Pair<Float, Float> tailPart : tail) {
-        	shapeRenderer.circle(tailPart.fst, tailPart.snd, 3.0f);
+        	shapeRenderer.circle(tailPart.fst, tailPart.snd, radius);
         }
         /*
         shapeRenderer.setColor(Color.WHITE);
@@ -110,8 +110,8 @@ public class Curve extends Actor{
     	}
     	float oldX = getX();
     	float oldY = getY();
-    	setX(getX() + SPEED*delta* (float) Math.cos(radians));
-    	setY(getY() + SPEED*delta* (float) Math.sin(radians));
+    	setX(getX() + speed*delta* (float) Math.cos(radians));
+    	setY(getY() + speed*delta* (float) Math.sin(radians));
     	
     	//TODO: go to screen coordinates
     	if (Math.round(oldX) != Math.round(getX()) || Math.round(oldY) != Math.round(getY())) {
@@ -144,14 +144,14 @@ public class Curve extends Actor{
 	private boolean checkCollision() {
 		GameStage gameStage = (GameStage) getParent();
 
-		Color frontColor = gameStage.getPixelColor(Math.round(getX() + (RADIUS +1)  * (float) Math.cos(radians)),
-											  Math.round(getY() + (RADIUS + 1) * (float) Math.sin(radians)));
+		Color frontColor = gameStage.getPixelColor(Math.round(getX() + (radius +1)  * (float) Math.cos(radians)),
+											  Math.round(getY() + (radius + 1) * (float) Math.sin(radians)));
 		
-		Color leftColor = gameStage.getPixelColor(Math.round(getX() + (RADIUS + 1) * (float) Math.cos(radians + Math.PI/2)),
-				  							  Math.round(getY() + (RADIUS + 1)* (float) Math.sin(radians + Math.PI/2)));
+		Color leftColor = gameStage.getPixelColor(Math.round(getX() + (radius + 1) * (float) Math.cos(radians + Math.PI/2)),
+				  							  Math.round(getY() + (radius + 1)* (float) Math.sin(radians + Math.PI/2)));
 
-		Color rightColor = gameStage.getPixelColor(Math.round(getX() + (RADIUS + 1) * (float) Math.cos(radians - Math.PI/2)),
-				  							  Math.round(getY() + (RADIUS + 1) * (float) Math.sin(radians - Math.PI/2)));
+		Color rightColor = gameStage.getPixelColor(Math.round(getX() + (radius + 1) * (float) Math.cos(radians - Math.PI/2)),
+				  							  Math.round(getY() + (radius + 1) * (float) Math.sin(radians - Math.PI/2)));
 		
 		/*
 		if (!frontColor.equals(Color.BLACK) || !leftColor.equals(Color.BLACK)|| !rightColor.equals(Color.BLACK)) {
@@ -336,6 +336,21 @@ public class Curve extends Actor{
 
 	public void setHoleStartTime(long holeStartTime) {
 		holeStartTime = holeStartTime;
+	}
+	public void setSpeed(int speed) {
+		this.speed = speed;
+	}
+
+	public float getSpeed() {
+		return speed;
+	}
+
+	public float getRadius() {
+		return radius;
+	}
+
+	public void setRadius(float radius) {
+		this.radius = radius;
 	}
 	
 
