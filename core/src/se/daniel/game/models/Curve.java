@@ -3,6 +3,8 @@ package se.daniel.game.models;
 import java.util.ArrayList;
 import java.util.Random;
 
+import se.daniel.game.screens.GameScreen;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
@@ -181,7 +183,7 @@ public class Curve extends Actor{
 			System.out.println("right collision " + getColor().toString() + " " + rightColor.toString());
 			return true;
 		}
-		if (getX() < 0 || getX() > getStage().getWidth()) {
+		if (getX() < 0 || getX() > getStage().getWidth() - GameScreen.SCOREBAR_WIDTH) {
 			System.out.println("x outside screen " + getColor().toString());
 			return true;
 		}
