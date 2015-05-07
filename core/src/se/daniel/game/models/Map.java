@@ -2,7 +2,7 @@ package se.daniel.game.models;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-
+import com.badlogic.gdx.math.MathUtils;
 public class Map {
 	public static final int EXTRA_SMALL = 1;
 	public static final int SMALL =2;

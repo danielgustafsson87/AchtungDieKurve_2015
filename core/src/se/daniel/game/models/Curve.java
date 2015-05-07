@@ -59,7 +59,7 @@ public class Curve extends Actor{
 		scoreLabel.setColor(getColor());
 		scoreLabel.setFontScale(3);
 		createTable();
-		setDebug(true);
+		//setDebug(true);
 	}
 	
     @Override
@@ -118,11 +118,12 @@ public class Curve extends Actor{
         	// No need to print subpixel precision for this game.
     		if(System.currentTimeMillis() < holeStartTime) {
         		tail.add(new Pair<Float, Float>(getX(), getY()));
-        	}
-        	// Only needs to check collision at new pixel. Otherwise just collides with ourself
-	    	if (checkCollision()) {
-	    		alive = false;
-	    		givePoints();
+        	
+	        	// Only needs to check collision at new pixel. Otherwise just collides with ourself
+		    	if (checkCollision()) {
+		    		alive = false;
+		    		givePoints();
+		    	}
 	    		
 	    	}
     	}
@@ -153,23 +154,6 @@ public class Curve extends Actor{
 		Color rightColor = gameStage.getPixelColor(Math.round(getX() + (radius + 1) * (float) Math.cos(radians - Math.PI/2)),
 				  							  Math.round(getY() + (radius + 1) * (float) Math.sin(radians - Math.PI/2)));
 		
-		/*
-		if (!frontColor.equals(Color.BLACK) || !leftColor.equals(Color.BLACK)|| !rightColor.equals(Color.BLACK)) {
-			System.out.println("");
-			System.out.print("collision: ");
-			System.out.print("curve color: " + getColor().toString());
-		}
-		
-		if (!frontColor.equals(Color.BLACK)) {
-			System.out.print(" front color " +frontColor.toString());
-		}
-		if (!leftColor.equals(Color.BLACK)) {
-			System.out.print(" left color " +leftColor.toString());
-		}
-		if (!rightColor.equals(Color.BLACK)) {
-			System.out.print(" right color " +rightColor.toString());
-		}
-		*/
 		
 		if (leftColor.b > 0.1 || leftColor.r > 0.1 || leftColor.g > 0.1) {
 			System.out.println("left collision " + getColor().toString() + " " + leftColor.toString());
@@ -179,7 +163,7 @@ public class Curve extends Actor{
 			System.out.println("front collision " + getColor().toString() + " " + frontColor.toString());
 			return true;
 		}
-		if (rightColor.b > 0.1 || rightColor.r > 0.1 || rightColor.g > 0.1) {
+		if (rightColor.b > 0.1 || rightColor.r > 0.1 || rightColor.g > 0.1){
 			System.out.println("right collision " + getColor().toString() + " " + rightColor.toString());
 			return true;
 		}
@@ -188,7 +172,7 @@ public class Curve extends Actor{
 			return true;
 		}
 		if (getY() < 0 || getY() > getStage().getHeight()) {
-			System.out.println("x outside screen " + getColor().toString());
+			System.out.println("y outside screen " + getColor().toString());
 			return true;
 		}
 		return false;
@@ -320,6 +304,7 @@ public class Curve extends Actor{
 		return score;
 	}
 	public void removeTail(){
+		// do we need to dispose tail somehow?
 		tail.clear();
 	}
 
