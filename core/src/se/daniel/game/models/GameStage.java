@@ -22,6 +22,7 @@ public class GameStage extends Group{
 	private int ScoreToWin;
 	private long gameStartTime;
 	private final static int BORDER_OFFSET = 30;
+	ArrayList<Curve> curves = new ArrayList<Curve>();
 	
 	public GameStage(int scoreToWin) {
 		super();
@@ -38,7 +39,7 @@ public class GameStage extends Group{
 
 		int maxScore = 0;
 		int aliveCurves = 0;
-		for(Curve curve : getCurves()) {
+		for(Curve curve : curves) {
 			if (curve.isAlive()) {
 				aliveCurves++;
 				if (aliveCurves > 1){
@@ -61,7 +62,7 @@ public class GameStage extends Group{
 		if(keyCode == Keys.ESCAPE) {
 			goToGameMenu();
 		}
-		for (Curve curve : getCurves()) {
+		for (Curve curve : curves) {
 			if (keyCode == curve.getKeyRight()) {
 				curve.setTurningRight(true);
 				return true;
@@ -91,11 +92,13 @@ public class GameStage extends Group{
 		//pixmap = ScreenUtils.getFrameBufferPixmap(0, 0, (int) getStage().getWidth(), (int) getStage().getHeight());
 		pixmap = ScreenUtils.getFrameBufferPixmap(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 	}
+	public void disposePixmap() {
+		pixmap.dispose();
+	}
 	public Pixmap getPixmap() {
 		return pixmap;
 	}
 	private void goToGameMenu() {
-		pixmap.dispose();
 		((Game) Gdx.app.getApplicationListener()).setScreen(new GameMenu(getCurves().size()));
 		//TODO: Add cool win animation!
 	}
@@ -117,11 +120,13 @@ public class GameStage extends Group{
 	public void startNewGame() {
 		gameStartTime = System.currentTimeMillis();
 		Random rnd = new Random();
-		for (Curve curve : getCurves()) {
+		for (Curve curve : curves) {
 			//random position not to close to sides
 			//System.out.print((float) (BORDER_OFFSET + rnd.nextInt((int) getStage().getViewport().getWorldWidth()) - (2 * BORDER_OFFSET)));
-			curve.setX((float) (BORDER_OFFSET + rnd.nextInt((int) getStage().getViewport().getWorldWidth() - (2 * BORDER_OFFSET) - GameScreen.SCOREBAR_WIDTH)));
-			curve.setY((float) (BORDER_OFFSET + rnd.nextInt((int) getStage().getViewport().getWorldHeight()- (2 * BORDER_OFFSET))));
+			curve.setX((float) (BORDER_OFFSET + rnd.nextInt((int) getStage().getViewport().getWorldWidth()
+					- (2 * BORDER_OFFSET) - GameScreen.SCOREBAR_WIDTH)));
+			curve.setY((float) (BORDER_OFFSET + rnd.nextInt((int) getStage().getViewport().getWorldHeight() 
+					- (2 * BORDER_OFFSET))));
 			
 			//random direction			
 			curve.setRadians(Math.toRadians(rnd.nextInt(360)));
@@ -132,11 +137,13 @@ public class GameStage extends Group{
 		}	
 	}
 	
-	public ArrayList<Curve> getCurves() {
-		ArrayList<Curve> curves = new ArrayList<Curve>();
+	public void initializeCurveList() {
 		for (Actor actor : getChildren()) {
 			curves.add((Curve) actor);
 		}
+	}
+	
+	public ArrayList<Curve> getCurves() {
 		return curves;
 	}
 }

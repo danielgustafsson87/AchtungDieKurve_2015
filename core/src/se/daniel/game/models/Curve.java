@@ -300,12 +300,12 @@ public class Curve extends Actor{
 	}
 
 	public int getScore() {
-		// TODO Auto-generated method stub
 		return score;
 	}
 	public void removeTail(){
 		// do we need to dispose tail somehow?
-		tail.clear();
+		tail = new ArrayList<Pair<Float, Float>>();
+		//tail.clear();
 	}
 
 	public String toTableString() {

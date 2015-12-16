@@ -89,6 +89,7 @@ public class GameScreen implements Screen, InputProcessor{
 			test++;
 		}*/
 		mainStage.draw();
+		gameStage.disposePixmap();
 		
 	}
 
@@ -126,6 +127,7 @@ public class GameScreen implements Screen, InputProcessor{
 			curve.setRadius(map.getRadius());
 			gameStage.addActor(curve);
 		}
+		gameStage.initializeCurveList();
 		gameStage.startNewGame();
 	}
 

@@ -17,20 +17,20 @@ public class Map {
 	private Label label;
 	private int speed;
 	private float radius;
-	
-	
+
+
 	public Map(Skin skin) {
 		label = new Label("Medium", skin);
 		setSize(MEDIUM);
 	}
-	
+
 	public void increaseSize() {
 		setSize(mapSize + 1);
 	}
 	public void decreaseSize() {
 		setSize(mapSize - 1);
 	}
-	
+
 	public void setSize(int size){
 		switch (size) {
 		case EXTRA_SMALL:
@@ -47,7 +47,7 @@ public class Map {
 			label.setText("Extra Small");
 			speed = 120;
 			radius = 6.0f;
-			
+
 			return;
 		case MEDIUM:
 			mapSize = MEDIUM;
