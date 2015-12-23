@@ -125,6 +125,7 @@ public class GameScreen implements Screen, InputProcessor{
 		for (Curve curve : curves) {
 			curve.setSpeed(map.getSpeed());
 			curve.setRadius(map.getRadius());
+			curve.setSettings();
 			gameStage.addActor(curve);
 		}
 		gameStage.initializeCurveList();

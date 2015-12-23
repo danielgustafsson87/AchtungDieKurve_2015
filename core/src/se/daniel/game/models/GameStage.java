@@ -6,6 +6,7 @@ import java.util.Random;
 import se.daniel.game.Main;
 import se.daniel.game.screens.GameMenu;
 import se.daniel.game.screens.GameScreen;
+import se.daniel.game.screens.WinScreen;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -99,7 +100,7 @@ public class GameStage extends Group{
 		return pixmap;
 	}
 	private void goToGameMenu() {
-		((Game) Gdx.app.getApplicationListener()).setScreen(new GameMenu(getCurves().size()));
+		((Game) Gdx.app.getApplicationListener()).setScreen(new WinScreen(curves));
 		//TODO: Add cool win animation!
 	}
 

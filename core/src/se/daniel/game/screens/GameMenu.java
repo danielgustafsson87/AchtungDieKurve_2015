@@ -32,7 +32,7 @@ public class GameMenu implements Screen{
 	private Label nbrOfPlayersLabel;
 	private Label scoreLabel;
 	private Map map;
-	private int scoreToWin = 30;
+	private int scoreToWin = 5;
 	public GameMenu(int nbrOfPlayers) {
 		scoreLabel = new Label(Integer.toString(scoreToWin), skin);
 		map = new Map(skin);

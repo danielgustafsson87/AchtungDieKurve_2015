@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import se.daniel.game.screens.GameScreen;
+import sun.font.TextLabel;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -258,10 +259,14 @@ public class Curve extends Actor{
 		Skin skin = new Skin(Gdx.files.internal("skins/uiskin.json"));
 		TextField playerName = new TextField(getName(), skin);
 		playerName.setColor(getColor());
+		playerName.setMaxLength(20);
+		playerName.setName("name");
 		table.add(playerName);
 		if (keyLeft != -1) {
 			TextField leftKeySetter = new TextField(Keys.toString(keyLeft), skin);
 			leftKeySetter.setColor(getColor());
+			leftKeySetter.setMaxLength(1);
+			leftKeySetter.setName("leftKey");
 			table.add(leftKeySetter);
 		} else {
 			table.add(new TextField("Not set", skin));
@@ -269,6 +274,9 @@ public class Curve extends Actor{
 		if (keyRight != -1) {
 			TextField rightKeySetter = new TextField(Keys.toString(keyRight), skin);
 			rightKeySetter.setColor(getColor());
+			rightKeySetter.setMaxLength(1);
+			rightKeySetter.setName("rightKey");
+			
 			table.add(rightKeySetter);
 		} else {
 			table.add(new TextField("not set", skin));
@@ -337,6 +345,14 @@ public class Curve extends Actor{
 	public void setRadius(float radius) {
 		this.radius = radius;
 	}
-	
 
+	public void setSettings() {
+		
+		setName(((TextField) table.findActor("name")).getText());
+		String lKey = ((TextField) table.findActor("leftKey")).getText();
+		setKeyLeft(Keys.valueOf(lKey));
+		
+		String rKey = ((TextField) table.findActor("rightKey")).getText();
+		setKeyRight(Keys.valueOf(rKey));
+	}
 }
